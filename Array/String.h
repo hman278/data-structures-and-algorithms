@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ostream>
-#include <iostream> // delete later
 
 class String {
 private:
@@ -14,15 +13,7 @@ public:
 
     char GetCharAt(int index);
 
-    String& operator=(const String& str) {
-        this->string = str.string;
-    }
-
+    String& operator=(const String& str);
     friend std::ostream& operator<<(std::ostream& os, const String& str);
 };
 
-std::ostream& operator<<(std::ostream& os, const String& str) {
-    os << "ds";
-    
-    return os;
-}
