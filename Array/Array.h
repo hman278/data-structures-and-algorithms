@@ -1,72 +1,59 @@
 #pragma once
 
+#include "./IIterable.h"
+#include "./Iterator.h"
+
 #include <ostream>
-
-template <typename DataType>
-class Iterator;
-
-template <typename T>
-class IIterable;
+#include <initializer_list>
+#include <algorithm>
 
 template <typename T, size_t SIZE = 0>
 class Array : IIterable<T>
 {
-private:
-    T array[SIZE];
-
 public:
-    Array<T, SIZE>(std::initializer_list<T> arr);
-    ~Array<T, SIZE>();
+    Array<T, SIZE>(std::initializer_list<T> arr) { std::copy(arr.begin(), arr.end(), array); }
+    ~Array<T, SIZE>() {}
 
-    virtual Iterator<T> begin() override;
-    virtual Iterator<T> end() override;
+    virtual Iterator<T> begin() override { return Iterator<T>(array); }
+    virtual Iterator<T> end() override { return Iterator<T>(array + SIZE); }
 
-    size_t GetLength();
+    size_t GetLength()
+    {
+        return SIZE;
+    }
+
     void Insert(const T &e, size_t index);
     Array &Replace(const T &e, size_t index, size_t len);
     Array &Reverse(const Array &arr);
     T *Find(const T &c);
 
-    Array &operator=(std::initializer_list<T> arr);
-    T &operator[](const size_t index);
-    template <typename U, size_t S>
-    friend std::ostream &operator<<(std::ostream &os, Array<U, S> &arr);
-};
-
-template <typename DataType>
-class Iterator
-{
-private:
-    DataType *ptr;
-
-public:
-    explicit Iterator(DataType *p) : ptr(p) {}
-
-    DataType &operator*()
+    Array &operator=(std::initializer_list<T> arr)
     {
-        return *ptr;
-    }
-
-    Iterator &operator++()
-    {
-        ++ptr;
+        std::copy(arr.begin(), arr.end(), array);
         return *this;
     }
 
-    bool operator==(const Iterator &other) const
+    bool operator==(const Array &arr)
     {
-        return ptr == other.ptr;
+        return std::equal(begin(), end(), arr.begin());
     }
 
-    bool operator!=(const Iterator &other) const
+    T &operator[](const size_t index)
     {
-        return !(*this == other);
+        return *(array + index);
     }
-};
 
-template <typename T>
-class IIterable
-{
-    virtual Iterator<T> begin() = 0;
-    virtual Iterator<T> end() = 0;
+    template <typename U, size_t S>
+    friend std::ostream &operator<<(std::ostream &os, Array<U, S> &arr)
+    {
+        for (auto element : arr)
+        {
+            os << element << " ";
+        }
+
+        return os;
+    }
+
+private:
+    T array[SIZE];
 };
