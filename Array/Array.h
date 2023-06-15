@@ -33,7 +33,7 @@ public:
         return *this;
     }
 
-    bool operator==(const Array &arr)
+    bool operator==(Array &arr)
     {
         return std::equal(begin(), end(), arr.begin());
     }
