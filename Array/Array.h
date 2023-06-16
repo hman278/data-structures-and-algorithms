@@ -3,6 +3,7 @@
 #include "./IIterable.h"
 #include "./Iterator.h"
 
+#include <math.h>
 #include <ostream>
 #include <initializer_list>
 #include <algorithm>
@@ -25,7 +26,52 @@ public:
     void Insert(const T &e, size_t index);
     Array &Replace(const T &e, size_t index, size_t len);
     Array &Reverse(const Array &arr);
-    T *Find(const T &c);
+
+    // Performs a linear search on a sorted array
+    // O(n)
+    bool LinearSearch(const T &element)
+    {
+        for (int i = 0; i < GetLength(); i++)
+        {
+            if (array[i] == element)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Performs binary search on a sorted array
+    // O(logN)
+    bool BinarySearch(const T &element)
+    {
+        // Inclusive
+        int low = 0;
+        // Exclusive
+        int high = GetLength();
+
+        do
+        {
+            const int middle = std::floor(low + (high - low) / 2);
+            const T value = array[middle];
+
+            if (value == element)
+            {
+                return true;
+            }
+            // If user defined type - has to have the ">" comparison operator overloaded
+            else if (value > element)
+            {
+                hi = middle;
+            }
+            else
+            {
+                low = middle + 1;
+            }
+        } while (low < high);
+
+        return false;
+    }
 
     Array &operator=(std::initializer_list<T> arr)
     {

@@ -22,6 +22,9 @@ int main()
 
     std::cout << "Array contents after reassignment: " << array << std::endl;
 
+    std::cout << "Does contain 4 (linear search): " << array.LinearSearch(4) << std::endl;
+    std::cout << "Does contain 5 (binary search): " << array.BinarySearch(5) << std::endl;
+
     std::cin.get();
 
     return 0;
