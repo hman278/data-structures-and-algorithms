@@ -13,6 +13,19 @@
       "MIMode": "gdb",
       "miDebuggerPath": "gdb.exe",
       "stopAtEntry": false
+    },
+    {
+      "name": "Launch LinkedList Program",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "cwd": "${workspaceFolder}/LinkedList",
+      "externalConsole": false,
+      "preLaunchTask": "Clang Build Programs",
+      "args": [],
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb.exe",
+      "stopAtEntry": false
     }
   ]
 }

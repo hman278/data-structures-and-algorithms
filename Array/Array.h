@@ -31,7 +31,7 @@ public:
     // O(n)
     bool LinearSearch(const T &element)
     {
-        for (int i = 0; i < GetLength(); i++)
+        for (int i = 0; i < GetLength(); ++i)
         {
             if (array[i] == element)
             {
@@ -62,7 +62,7 @@ public:
             // If user defined type - has to have the ">" comparison operator overloaded
             else if (value > element)
             {
-                hi = middle;
+                high = middle;
             }
             else
             {
@@ -71,6 +71,23 @@ public:
         } while (low < high);
 
         return false;
+    }
+
+    // O(sqr(N))
+    void BubbleSort()
+    {
+        for (int i = 0; i < GetLength(); ++i)
+        {
+            for (int j = 0; j < GetLength() - 1 - i; ++j)
+            {
+                if (array[j] > array[j + 1])
+                {
+                    T tmp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = tmp;
+                }
+            }
+        }
     }
 
     Array &operator=(std::initializer_list<T> arr)
@@ -89,8 +106,7 @@ public:
         return *(array + index);
     }
 
-    template <typename U, size_t S>
-    friend std::ostream &operator<<(std::ostream &os, Array<U, S> &arr)
+    friend std::ostream &operator<<(std::ostream &os, Array<T, SIZE> &arr)
     {
         for (auto element : arr)
         {
