@@ -6,9 +6,6 @@
 
 class DummyClass
 {
-private:
-    int dummyData = 5;
-
 public:
     DummyClass() {}
 };
@@ -28,8 +25,7 @@ int main()
 
     // LinkedList<DummyClass> linkedList;
     // DummyClass *c = new DummyClass();
-    // linkedList.Prepend(*c);
-    // delete c;
+    // linkedList.Append(c);
 
     std::cin.get();
 
