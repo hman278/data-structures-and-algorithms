@@ -81,6 +81,11 @@ public:
 
         head = std::move(newHead);
 
+        if (tail.get() == nullptr)
+        {
+            tail = head;
+        }
+
         length++;
     }
 

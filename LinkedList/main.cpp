@@ -16,11 +16,12 @@ public:
 int main()
 {
     LinkedList<int> linkedList;
-    linkedList.Append(-1);
-    linkedList.Prepend(1);
+    linkedList.Prepend(100);
     linkedList.Append(2);
+    linkedList.Prepend(1);
     linkedList.Append(3);
     linkedList.Append(4);
+    linkedList.Append(5);
     linkedList.Prepend(0);
 
     std::cout << linkedList << std::endl;
