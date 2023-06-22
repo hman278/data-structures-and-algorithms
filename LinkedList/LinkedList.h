@@ -10,7 +10,6 @@ template <typename T>
 class Node
 {
 public:
-    Node(const T *data) : data(*data) {}
     Node(const T &data) : data(data) {}
 
 public:
@@ -24,7 +23,7 @@ template <typename T>
 class LinkedList
 {
 public:
-    LinkedList<T>() {}
+    LinkedList<T>() : length(0) {}
     ~LinkedList() {}
 
     size_t GetLength()
@@ -47,84 +46,47 @@ public:
         length--;
     }
 
-    void Append(const T *item)
-    {
-        try
-        {
-            if (item == nullptr)
-            {
-                throw std::invalid_argument("Can't add an item that is a nullptr");
-            }
-
-            if (head.get() == nullptr)
-            {
-                /*
-                    Create a circular shared pointer reference
-                    between the head and the tail for the one
-                    single object in the linked list
-                */
-                head = std::make_shared<Node<T>>(item);
-                tail = head;
-                length++;
-
-                return;
-            }
-
-            Node<T> *newTail = new Node<T>(*item);
-
-            std::shared_ptr<Node<T>> tmp = std::move(tail);
-            tail.reset(newTail);
-            tail->prev = std::move(tmp);
-
-            length++;
-
-            delete newTail;
-        }
-        catch (const std::invalid_argument &e)
-        {
-            std::cout << e.what() << std::endl;
-        }
-        catch (const std::exception &e)
-        {
-            std::cout << e.what() << std::endl;
-        }
-    }
-
     void Append(const T &item)
     {
+        std::shared_ptr<Node<T>> newTail = std::make_shared<Node<T>>(item);
+        newTail->next = nullptr;
+        newTail->prev = tail;
+
         if (head.get() == nullptr)
         {
-            /*
-                Create a circular shared pointer reference
-                between the head and the tail for the one
-                single object in the linked list
-            */
-            head = std::make_shared<Node<T>>(item);
-            tail = head;
-            length++;
+            newTail->prev = nullptr;
+            head = newTail;
+            tail = newTail;
 
             return;
         }
 
-        Node<T> *newTail = new Node<T>(item);
-
-        std::shared_ptr<Node<T>> tmp = std::move(tail);
-        tail.reset(newTail);
-        tail->prev = std::move(tmp);
+        tail->next = newTail;
+        tail = std::move(newTail);
 
         length++;
-
-        delete newTail;
     }
 
-    void Prepend(T item)
+    void Prepend(const T &item)
     {
-        length++;
+        std::shared_ptr<Node<T>> newHead = std::make_shared<Node<T>>(item);
+        newHead->next = head;
+        newHead->prev = nullptr;
 
-        head = item;
+        if (head.get() != nullptr)
+        {
+            // Set the second node's prev to the new head
+            head->prev = newHead;
+        }
+
+        head = std::move(newHead);
+
+        length++;
     }
 
-    T Get(size_t index) {}
+    T Get(size_t index)
+    {
+    }
 
     bool IsEmpty() const
     {
