@@ -4,28 +4,18 @@
 #include <memory>
 #include <string>
 
-class DummyClass
-{
-public:
-    DummyClass() {}
-};
-
 int main()
 {
     LinkedList<int> linkedList;
-    linkedList.Prepend(100);
-    linkedList.Append(2);
-    linkedList.Prepend(1);
-    linkedList.Append(3);
-    linkedList.Append(4);
-    linkedList.Append(5);
     linkedList.Prepend(0);
+    linkedList.Prepend(1);
+    linkedList.Prepend(2);
+    linkedList.Prepend(3);
 
-    std::cout << linkedList << std::endl;
-
-    // LinkedList<DummyClass> linkedList;
-    // DummyClass *c = new DummyClass();
-    // linkedList.Append(c);
+    std::cout << linkedList.Get(0) << std::endl;
+    std::cout << linkedList.Get(1) << std::endl;
+    std::cout << linkedList.Get(2) << std::endl;
+    std::cout << linkedList.Get(3) << std::endl;
 
     std::cin.get();
 

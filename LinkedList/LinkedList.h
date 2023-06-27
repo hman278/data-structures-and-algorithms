@@ -33,6 +33,32 @@ public:
 
     void InsertAt(T item, size_t index)
     {
+        if (index >= length)
+        {
+            throw std::out_of_range("The index is out of range.");
+        }
+
+        if (index == 0)
+        {
+            Prepend(item);
+
+            return;
+        }
+        else if (index == length - 1)
+        {
+            Append(item);
+
+            return;
+        }
+
+        Node<T> &oldItem = GetNode(index);
+
+        std::shared_ptr<Node<T>> newItem = std::make_shared<Node<T>>(item);
+
+        *newItem->next = oldItem;
+        newItem->prev = oldItem.prev;
+        oldItem = *newItem;
+
         length++;
     }
 
@@ -89,8 +115,10 @@ public:
         length++;
     }
 
-    T Get(size_t index)
+    T const &Get(size_t index)
     {
+        T &data = GetNode(index)->data;
+        return data;
     }
 
     bool IsEmpty() const
@@ -98,8 +126,8 @@ public:
         return head.get() == nullptr;
     }
 
-    Node<T> GetHead() const { return *head; }
-    Node<T> GetTail() const { return *tail; }
+    Node<T> const &GetHead() const { return *head; }
+    Node<T> const &GetTail() const { return *tail; }
 
     friend std::ostream &operator<<(std::ostream &os, const LinkedList &linkedList)
     {
@@ -119,6 +147,32 @@ public:
         os << node.data;
 
         return os;
+    }
+
+private:
+    Node<T> *GetNode(size_t index)
+    {
+        if (index == length - 1)
+        {
+            return &*tail;
+        }
+
+        Node<T> *tmp = &*head;
+
+        size_t i = 0;
+        while (tmp != nullptr)
+        {
+            if (i == index)
+            {
+                return tmp;
+            }
+
+            i++;
+            tmp = &*tmp->next;
+        }
+
+        // The element does not exist
+        return nullptr;
     }
 
 private:
