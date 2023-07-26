@@ -10,56 +10,67 @@ template <typename T>
 class Node
 {
 public:
-    Node(const T &data) : data(data) {}
+    Node(const T &data) : data(data), next(nullptr), prev(nullptr) {}
 
 public:
     T data;
 
-    std::shared_ptr<Node<T>> next;
-    std::shared_ptr<Node<T>> prev;
+    Node<T> *next;
+    Node<T> *prev;
 };
 
 template <typename T>
 class LinkedList
 {
 public:
-    LinkedList<T>() : length(0) {}
-    ~LinkedList() {}
+    LinkedList<T>() : length(0), head(nullptr), tail(nullptr) {}
+
+    ~LinkedList()
+    {
+        Node<T> *current = const_cast<Node<T> *>(GetHead());
+        Node<T> *next;
+
+        while (current != nullptr)
+        {
+            next = current->next;
+            delete current;
+            current = next;
+        }
+
+        head = nullptr;
+        tail = nullptr;
+
+        length = 0;
+    }
 
     size_t GetLength()
     {
         return length;
     }
 
-    void InsertAt(T item, size_t index)
+    void InsertBefore(Node<T> *nextNode, const T &data)
     {
-        if (index >= length)
+        if (nextNode == nullptr)
         {
-            throw std::out_of_range("The index is out of range.");
+            throw std::invalid_argument("The provided node is null.");
         }
-
-        if (index == 0)
-        {
-            Prepend(item);
-
-            return;
-        }
-        else if (index == length - 1)
-        {
-            Append(item);
-
-            return;
-        }
-
-        Node<T> &oldItem = GetNode(index);
-
-        std::shared_ptr<Node<T>> newItem = std::make_shared<Node<T>>(item);
-
-        *newItem->next = oldItem;
-        newItem->prev = oldItem.prev;
-        oldItem = *newItem;
 
         length++;
+
+        Node<T> *newNode = new Node<T>(data);
+
+        newNode->prev = nextNode->prev;
+        nextNode->prev = newNode;
+        newNode->next = nextNode;
+
+        if (newNode->prev != nullptr)
+        {
+            newNode->prev->next = newNode;
+        }
+        else
+        {
+            head = newNode;
+        }
     }
 
     T Remove(T item)
@@ -72,62 +83,71 @@ public:
         length--;
     }
 
-    void Append(const T &item)
+    Node<T> *Append(const T &item)
     {
-        std::shared_ptr<Node<T>> newTail = std::make_shared<Node<T>>(item);
+        length++;
+
+        Node<T> *newTail = new Node<T>(item);
         newTail->next = nullptr;
         newTail->prev = tail;
 
-        if (head.get() == nullptr)
+        if (head == nullptr)
         {
             newTail->prev = nullptr;
             head = newTail;
             tail = newTail;
 
-            return;
+            return newTail;
         }
 
         tail->next = newTail;
-        tail = std::move(newTail);
+        tail = newTail;
 
-        length++;
+        return newTail;
     }
 
-    void Prepend(const T &item)
+    Node<T> *Prepend(const T &item)
     {
-        std::shared_ptr<Node<T>> newHead = std::make_shared<Node<T>>(item);
+        length++;
+
+        Node<T> *newHead = new Node<T>(item);
         newHead->next = head;
         newHead->prev = nullptr;
 
-        if (head.get() != nullptr)
+        if (head != nullptr)
         {
-            // Set the second node's prev to the new head
             head->prev = newHead;
         }
 
-        head = std::move(newHead);
+        head = newHead;
 
-        if (tail.get() == nullptr)
+        if (tail == nullptr)
         {
             tail = head;
         }
 
-        length++;
+        return newHead;
     }
 
     T const &Get(size_t index)
     {
+        if (index >= length)
+        {
+            throw std::out_of_range("The index is out of range.");
+        }
+
         T &data = GetNode(index)->data;
+
         return data;
     }
 
     bool IsEmpty() const
     {
-        return head.get() == nullptr;
+        return head == nullptr;
     }
 
-    Node<T> const &GetHead() const { return *head; }
-    Node<T> const &GetTail() const { return *tail; }
+    Node<T> const *GetHead() const { return head; }
+    Node<T> const *GetTail() const { return tail; }
 
     friend std::ostream &operator<<(std::ostream &os, const LinkedList &linkedList)
     {
@@ -136,15 +156,15 @@ public:
             return os;
         }
 
-        Node<T> node = linkedList.GetHead();
+        Node<T> *node = const_cast<Node<T> *>(linkedList.GetHead());
 
-        while (node.next != nullptr)
+        while (node->next != nullptr)
         {
-            os << node.data << " ";
-            node = *node.next;
+            os << node->data << " ";
+            node = node->next;
         }
 
-        os << node.data;
+        os << node->data;
 
         return os;
     }
@@ -154,10 +174,10 @@ private:
     {
         if (index == length - 1)
         {
-            return &*tail;
+            return tail;
         }
 
-        Node<T> *tmp = &*head;
+        Node<T> *tmp = const_cast<Node<T> *>(GetHead());
 
         size_t i = 0;
         while (tmp != nullptr)
@@ -168,7 +188,7 @@ private:
             }
 
             i++;
-            tmp = &*tmp->next;
+            tmp = tmp->next;
         }
 
         // The element does not exist
@@ -176,8 +196,8 @@ private:
     }
 
 private:
-    std::shared_ptr<Node<T>> head;
-    std::shared_ptr<Node<T>> tail;
+    Node<T> *head;
+    Node<T> *tail;
 
     size_t length;
 };
