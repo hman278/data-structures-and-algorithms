@@ -48,7 +48,7 @@ public:
         return length;
     }
 
-    void InsertBefore(Node<T> *nextNode, const T &data)
+    Node<T> *InsertBefore(Node<T> *nextNode, const T &data)
     {
         if (nextNode == nullptr)
         {
@@ -71,15 +71,90 @@ public:
         {
             head = newNode;
         }
+
+        return newNode;
     }
 
-    T Remove(T item)
+    void RemoveAll(const T &item)
     {
-        length--;
+        Node<T> *nodeToDelete;
+
+        while (head != nullptr && head->data == item)
+        {
+            nodeToDelete = head;
+            head = head->next;
+            head->prev = nullptr;
+
+            delete nodeToDelete;
+            length--;
+        }
+        while (tail != nullptr && tail->data == item)
+        {
+            nodeToDelete = tail;
+            tail = tail->prev;
+            tail->next = nullptr;
+
+            delete nodeToDelete;
+            length--;
+        }
+
+        Node<T> *current = const_cast<Node<T> *>(GetHead());
+        while (current->next != nullptr)
+        {
+            if (current->next->data == item)
+            {
+                nodeToDelete = current->next;
+                current->next = current->next->next;
+                current->prev = current->prev->prev;
+
+                delete current;
+
+                length--;
+            }
+            current = current->next;
+        }
     }
 
-    T RemoveAt(size_t index)
+    void RemoveAt(const size_t index)
     {
+        if (index > length)
+        {
+            throw std::out_of_range("The supplied index is out of range of this Linked List.");
+        }
+
+        if (index == 0)
+        {
+            head->next->prev = nullptr;
+            head = head->next;
+
+            length--;
+
+            return;
+        }
+        else if (index == length - 1)
+        {
+            tail->prev->next = nullptr;
+            tail = tail->prev;
+
+            length--;
+
+            return;
+        }
+
+        Node<T> *current = const_cast<Node<T> *>(GetHead());
+
+        for (int i = 0; i < index - 1; ++i)
+        {
+            current = current->next;
+        }
+
+        Node<T> *next = current->next->next;
+
+        delete current->next;
+
+        current->next = next;
+        next->prev = current;
+
         length--;
     }
 

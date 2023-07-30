@@ -9,16 +9,20 @@ int main()
     LinkedList<int> linkedList;
 
     linkedList.Append(2);
-    Node<int> *firstNode = linkedList.Prepend(1);
-    linkedList.InsertBefore(firstNode, 0);
+    // Node<int> *firstNode = linkedList.Prepend(1);
+    // linkedList.InsertBefore(firstNode, 0);
+    // linkedList.Append(1);
+    linkedList.Append(3);
+    linkedList.Append(4);
+    linkedList.Append(5);
+    linkedList.Append(6);
 
-    std::cout << linkedList << std::endl;
+    std::cout << "Before removing: " << linkedList << std::endl;
 
-    // std::cout << linkedList.Get(0) << std::endl;
-    // std::cout << linkedList.Get(1) << std::endl;
-    // std::cout << linkedList.Get(2) << std::endl;
-    // std::cout << linkedList.Get(3) << std::endl;
-    // std::cout << linkedList.Get(4) << std::endl;
+    linkedList.RemoveAt(3);
+    // linkedList.RemoveAll(3);
+
+    std::cout << "After removing: " << linkedList << std::endl;
 
     // std::cin.get();
 
