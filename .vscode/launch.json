@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "Launch Array Program",
+      "name": "Build and Run Array Program",
       "type": "cppdbg",
       "request": "launch",
       "program": "${command:cmake.launchTargetPath}",
-      "cwd": "${workspaceFolder}/Array",
+      "cwd": "${workspaceFolder}/src/Array",
       "externalConsole": false,
       "preLaunchTask": "Clang Build Programs",
       "args": [],
@@ -15,11 +15,11 @@
       "stopAtEntry": false
     },
     {
-      "name": "Launch LinkedList Program",
+      "name": "Build and Run LinkedList Program",
       "type": "cppdbg",
       "request": "launch",
       "program": "${command:cmake.launchTargetPath}",
-      "cwd": "${workspaceFolder}/LinkedList",
+      "cwd": "${workspaceFolder}/src/LinkedList",
       "externalConsole": false,
       "preLaunchTask": "Clang Build Programs",
       "args": [],
