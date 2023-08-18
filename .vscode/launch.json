@@ -2,43 +2,48 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "Build and Run Array Program",
+      "name": "Debug Build and Run Array Program",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${command:cmake.launchTargetPath}",
-      "cwd": "${workspaceFolder}/src/Array",
+      "program": "${workspaceFolder}/build/src/Array/Debug/Array.exe",
+      "cwd": "${workspaceFolder}/build/src/Array",
       "externalConsole": false,
-      "preLaunchTask": "Clang Build Program",
+      "preLaunchTask": "buildAndDebug",
       "args": [],
       "MIMode": "gdb",
       "miDebuggerPath": "gdb.exe",
       "stopAtEntry": false
     },
     {
-      "name": "Build and Run LinkedList Program",
+      "name": "Debug Build and Run LinkedList Program",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${command:cmake.launchTargetPath}",
-      "cwd": "${workspaceFolder}/src/LinkedList",
+      "program": "${workspaceFolder}/build/src/LinkedList/Debug/LinkedList.exe",
+      "cwd": "${workspaceFolder}/build/src/LinkedList",
       "externalConsole": false,
-      "preLaunchTask": "Clang Build Program",
+      "preLaunchTask": "buildAndDebug",
       "args": [],
       "MIMode": "gdb",
       "miDebuggerPath": "gdb.exe",
       "stopAtEntry": false
     },
     {
-      "name": "Build and Run LinkedListTest Program",
+      "name": "Debug Build and Run LinkedListTest Program",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${command:cmake.launchTargetPath}",
-      "cwd": "${workspaceFolder}/tst/LinkedList",
+      "preLaunchTask": "buildAndDebug",
+      "cwd": "${workspaceFolder}/build/tst/LinkedList",
+      "program": "${workspaceFolder}/build/tst/LinkedList/Debug/LinkedListTest.exe", // ${command:cmake.launchTargetPath}
       "externalConsole": false,
-      "preLaunchTask": "Clang Build Program",
-      "args": [],
       "MIMode": "gdb",
       "miDebuggerPath": "gdb.exe",
       "stopAtEntry": false
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Tests With DrMemory",
+      "preLaunchTask": "testMemory"
     }
   ]
 }

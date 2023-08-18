@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <crtdbg.h>
 
 int main()
 {
@@ -24,7 +25,7 @@ int main()
 
     std::cout << "After removing: " << linkedList << std::endl;
 
-    // std::cin.get();
+    std::cin.get();
 
     return 0;
 }
