@@ -30,7 +30,7 @@
       "label": "testMemory",
       "type": "shell",
       "command": "ctest",
-      "args": ["-T", "memcheck"], // "-C", ".\\DartConfiguration.tcl" - no longer using this config // --verbose
+      "args": ["-T", "memcheck", "--verbose"], // "-C", ".\\DartConfiguration.tcl" - no longer using this config // --verbose
       "options": {
         "cwd": "${workspaceFolder}/build"
       }
