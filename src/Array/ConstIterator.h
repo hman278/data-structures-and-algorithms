@@ -4,37 +4,37 @@
 #include <iterator>
 
 template <typename T>
-class Iterator
+class ConstIterator
 {
 public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = T;
-    using pointer = T *;
-    using reference = T &;
+    using pointer = const T *;
+    using reference = const T &;
 
-    Iterator(pointer p) : ptr(p) {}
+    ConstIterator(pointer p) : ptr(p) {}
 
     reference operator*() const { return *ptr; }
     pointer operator->() const { return ptr; }
     // Prefix increment
-    Iterator &operator++()
+    ConstIterator &operator++()
     {
         ptr++;
         return *this;
     }
     // Postfix increment
-    Iterator operator++(int)
+    ConstIterator operator++(int)
     {
-        Iterator tmp = *this;
+        ConstIterator tmp = *this;
         ++(*this);
         return tmp;
     }
 
     template <typename U>
-    friend bool operator==(const Iterator<U> &a, const Iterator<U> &b) { return a.ptr == b.ptr; }
+    friend bool operator==(const ConstIterator<U> &a, const ConstIterator<U> &b) { return a.ptr == b.ptr; }
     template <typename U>
-    friend bool operator!=(const Iterator<U> &a, const Iterator<U> &b) { return a.ptr != b.ptr; }
+    friend bool operator!=(const ConstIterator<U> &a, const ConstIterator<U> &b) { return a.ptr != b.ptr; }
 
 private:
     pointer ptr;

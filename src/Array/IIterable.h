@@ -1,10 +1,10 @@
 template <typename>
-class Iterator;
+class ConstIterator;
 
 template <typename T>
 class IIterable
 {
 public:
-    virtual Iterator<T> begin() = 0;
-    virtual Iterator<T> end() = 0;
+    virtual ConstIterator<T> begin() const = 0;
+    virtual ConstIterator<T> end() const = 0;
 };

@@ -40,6 +40,18 @@
       "stopAtEntry": false
     },
     {
+      "name": "Debug Build and Run ArrayTest Program",
+      "type": "cppdbg",
+      "request": "launch",
+      "preLaunchTask": "buildAndDebug",
+      "cwd": "${workspaceFolder}/build/tst/Array",
+      "program": "${workspaceFolder}/build/tst/Array/ArrayTest.exe", // ${command:cmake.launchTargetPath}
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb.exe",
+      "stopAtEntry": false
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Run Tests With DrMemory",

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "./IIterable.h"
-#include "./Iterator.h"
+#include "./ConstIterator.h"
 
 #include <math.h>
 #include <ostream>
 #include <initializer_list>
 #include <algorithm>
+#include <format>
 
 template <typename T, size_t SIZE = 0>
 class Array : IIterable<T>
@@ -15,15 +16,39 @@ public:
     Array<T, SIZE>(std::initializer_list<T> arr) { std::copy(arr.begin(), arr.end(), array); }
     ~Array<T, SIZE>() {}
 
-    virtual Iterator<T> begin() override { return Iterator<T>(array); }
-    virtual Iterator<T> end() override { return Iterator<T>(array + SIZE); }
+    virtual ConstIterator<T> begin() const override { return ConstIterator<T>(array); }
+    virtual ConstIterator<T> end() const override { return ConstIterator<T>(array + SIZE); }
 
-    size_t GetLength()
+    const size_t GetLength() const
     {
         return SIZE;
     }
 
-    void Insert(const T &e, size_t index);
+    // Array<T, SIZE + 1> Insert(const T &e, size_t index)
+    // {
+    //     if (index >= SIZE)
+    //     {
+    //         throw std::out_of_range("Index out of range");
+    //     }
+    //
+    //     Array<T, SIZE + 1> array;
+    //
+    //     if (i == SIZE - 1)
+    //     {
+    //         return;
+    //     }
+    //     else if (i == 0)
+    //     {
+    //         return;
+    //     }
+    //
+    //     for (int i = index; i < SIZE; ++i)
+    //     {
+    //     }
+    //
+    //     return array;
+    // }
+
     Array &Replace(const T &e, size_t index, size_t len);
     Array &Reverse(const Array &arr);
 
@@ -96,19 +121,31 @@ public:
         return *this;
     }
 
-    bool operator==(Array &arr)
+    // User defined types must have the '==' operator overloaded
+    template <typename U, size_t SIZE_>
+    bool operator==(const Array<U, SIZE_> &arr) const
     {
+        if (SIZE != SIZE_)
+        {
+            return false;
+        }
+
         return std::equal(begin(), end(), arr.begin());
     }
 
     T &operator[](const size_t index)
     {
+        if (index >= SIZE)
+        {
+            throw std::out_of_range("Index out of range");
+        }
+
         return *(array + index);
     }
 
     friend std::ostream &operator<<(std::ostream &os, Array<T, SIZE> &arr)
     {
-        for (auto element : arr)
+        for (T element : arr)
         {
             os << element << " ";
         }
