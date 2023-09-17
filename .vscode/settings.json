@@ -73,6 +73,11 @@
     "variant": "cpp",
     "charconv": "cpp",
     "format": "cpp",
-    "span": "cpp"
+    "span": "cpp",
+    "locale": "cpp",
+    "xlocbuf": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xloctime": "cpp"
   }
 }

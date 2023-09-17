@@ -13,7 +13,16 @@ template <typename T, size_t SIZE = 0>
 class Array : IIterable<T>
 {
 public:
-    Array<T, SIZE>(std::initializer_list<T> arr) { std::copy(arr.begin(), arr.end(), array); }
+    Array<T, SIZE>() {}
+    Array<T, SIZE>(std::initializer_list<T> arr)
+    {
+        if (arr.size() < GetLength())
+        {
+            throw std::invalid_argument("Initializer list size mismatch");
+        }
+
+        std::copy(arr.begin(), arr.end(), array);
+    }
     ~Array<T, SIZE>() {}
 
     virtual ConstIterator<T> begin() const override { return ConstIterator<T>(array); }
@@ -24,33 +33,21 @@ public:
         return SIZE;
     }
 
-    // Array<T, SIZE + 1> Insert(const T &e, size_t index)
-    // {
-    //     if (index >= SIZE)
-    //     {
-    //         throw std::out_of_range("Index out of range");
-    //     }
-    //
-    //     Array<T, SIZE + 1> array;
-    //
-    //     if (i == SIZE - 1)
-    //     {
-    //         return;
-    //     }
-    //     else if (i == 0)
-    //     {
-    //         return;
-    //     }
-    //
-    //     for (int i = index; i < SIZE; ++i)
-    //     {
-    //     }
-    //
-    //     return array;
-    // }
+    void Reverse()
+    {
+        int start = 0;
+        int end = GetLength() - 1;
 
-    Array &Replace(const T &e, size_t index, size_t len);
-    Array &Reverse(const Array &arr);
+        while (start < end)
+        {
+            int temp = array[start];
+            array[start] = array[end];
+            array[end] = temp;
+
+            start++;
+            end--;
+        }
+    }
 
     // Performs a linear search on a sorted array
     // O(n)
@@ -117,19 +114,24 @@ public:
 
     Array &operator=(std::initializer_list<T> arr)
     {
+        if (arr.size() < GetLength())
+        {
+            throw std::invalid_argument("Initializer list size mismatch");
+        }
+
         std::copy(arr.begin(), arr.end(), array);
         return *this;
     }
 
-    // User defined types must have the '==' operator overloaded
-    template <typename U, size_t SIZE_>
-    bool operator==(const Array<U, SIZE_> &arr) const
+    Array &operator=(const Array &arr)
     {
-        if (SIZE != SIZE_)
-        {
-            return false;
-        }
+        arr.array = array;
+        return *this;
+    }
 
+    // User defined types must have the '==' operator overloaded
+    bool operator==(const Array &arr) const
+    {
         return std::equal(begin(), end(), arr.begin());
     }
 
